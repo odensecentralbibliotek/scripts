@@ -1,0 +1,7 @@
+Import fbs platform
+
+./aegir_import_platform.sh username@ip fbs-7.59
+
+Import ding2 site from fbs platform:
+
+./aegir_import_site_remote.sh username@ip fbs-7.59 www.nordfynsbib.dk ding2
