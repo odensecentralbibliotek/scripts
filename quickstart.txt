@@ -5,3 +5,5 @@ Import fbs platform
 Import ding2 site from fbs platform:
 
 ./aegir_import_site_remote.sh username@ip fbs-7.59 www.nordfynsbib.dk ding2
+
+It can happen that there are missing modules in the platform or it uses different modules then other sites. in the case install the modules with drush on the platform and then retry with script of manualy via the aegir frontend.
