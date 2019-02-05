@@ -36,7 +36,7 @@ SITE=$3
 INSTALL_PROFILE=$4
 DRUSH_PLATFORM_NAME=$(/usr/bin/php -r "define('test','$2'); echo str_replace('-','',str_replace('.','',test));")
 
-echo "INFO: Finder nyeste backup fil.\n"
+echo "INFO: Finding newest backup file for $SITE.\n"
 NEWST_BACKUP_FILE=($(ssh yusuf@10.0.0.115  ls -t "/data/disk/o2/backups/$SITE*" | head -1 | xargs -n1 basename))
 
 #Sync db backup to platform
@@ -51,7 +51,7 @@ BACKUPFILE="$(ls -t $SITE* | head -1)"
 cd $LOCALSTI/$PLATFORM
 
 #delete old sites 
-echo "INFO: Deleting old site if present..(this takes a while on large sites)\n"
+echo "INFO: Deleting old $SITE if present..(this takes a while on large sites)\n"
 sudo -H -u aegir bash -c "drush @hostmaster hosting-task @dev.$SITE disable"
 sudo -H -u aegir bash -c "drush @hostmaster hosting-task @dev.$SITE delete"
 
@@ -59,7 +59,7 @@ sudo -H -u aegir bash -c "drush @hostmaster hosting-task @dev.$SITE delete"
 sudo -H -u aegir bash -c "drush provision-save '@dev.$SITE' --context_type='site' --uri='dev.$SITE' --platform='@platform_$DRUSH_PLATFORM_NAME' --server='@server_master' --db_server='@server_localhost' --profile='$INSTALL_PROFILE' --client_name='admin'"
 
 #deploy
-echo "INFO: Deploying the new site!\n"
+echo "INFO: Deploying the new $SITE!\n"
 sudo chown aegir:www-data $LOCALSTI/$PLATFORM/sites -R
 sudo -H -u aegir bash -c "drush @dev.$SITE provision-deploy $LOCALBACKUPSTI$BACKUPFILE"
 sudo -H -u aegir bash -c "drush @hostmaster hosting-task @platform_$DRUSH_PLATFORM_NAME verify"
